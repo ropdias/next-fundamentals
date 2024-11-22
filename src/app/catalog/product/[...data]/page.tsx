@@ -1,6 +1,4 @@
-'use client'
-
-import { use } from 'react'
+import { AddToCartButton } from './add-to-cart-button'
 
 interface ProductProps {
   params: Promise<{
@@ -14,14 +12,12 @@ interface ProductProps {
 // Streaming SSR => Ler/escrever dados de forma parcial + Server-side Rendering
 // Renderizar um componente pelo lado do servidor de forma PARCIAL
 
-export default function Product({ params }: ProductProps) {
-  const { data } = use(params)
-  const [productId, size, color] = data
+export default async function Product({ params }: ProductProps) {
+  const response = await fetch('https://api.github.com/users/ropdias')
+  const user = await response.json()
 
-  console.log(params)
-  function addToCart() {
-    console.log('Adicionou ao carrinho')
-  }
+  const { data } = await params
+  const [productId, size, color] = data
 
   return (
     <div>
@@ -29,7 +25,7 @@ export default function Product({ params }: ProductProps) {
       <p>Size: {size}</p>
       <p>Color: {color}</p>
 
-      <button onClick={addToCart}>Adicionar ao carrinho</button>
+      <AddToCartButton />
     </div>
   )
 }
